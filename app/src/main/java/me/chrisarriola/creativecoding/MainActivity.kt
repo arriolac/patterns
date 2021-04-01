@@ -2,8 +2,6 @@ package me.chrisarriola.creativecoding
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -24,8 +22,8 @@ class MainActivity : AppCompatActivity() {
                     KochSnowflake(
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colors.primary,
-                        iterations = 6,
-                        strokeWidth = 3f
+                        iterations = 4,
+                        strokeWidth = 5f
                     )
                 }
             }

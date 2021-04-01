@@ -1,19 +1,39 @@
 package me.chrisarriola.creativecoding.kochsnowflake
 
+import androidx.compose.animation.animatedFloat
+import androidx.compose.animation.core.AnimationConstants
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.repeatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.onActive
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.lerp
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Matrix
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.graphics.drawscope.scale
+import androidx.core.graphics.rotationMatrix
+import androidx.core.graphics.scaleMatrix
 import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
 
 private const val viewFactor = 0.95f
+private val scaleMatrix = Matrix(
+    values = floatArrayOf(
+        1f, 0f, 0f, 0f,
+        0f, 1f, 0f, 0f,
+        0f, 0f, 0f, 0f,
+        0f, 0f, 0f, 0f,
+    )
+)
+
 
 @Composable
 fun KochSnowflake(
@@ -22,8 +42,14 @@ fun KochSnowflake(
     iterations: Int = 0,
     strokeWidth: Float = Stroke.HairlineWidth
 ) {
+    val rotationProgress = animatedFloat(initVal = 0f)
+    onActive {
+        rotationProgress.animateTo(
+            360f,
+            anim = repeatable(AnimationConstants.Infinite, tween(30000, easing = LinearEasing))
+        )
+    }
     Canvas(modifier = modifier) {
-        // Initialize the equilateral triangle
         val length = viewFactor * size.width
         val vertex1 = Offset(
             size.width * (1 - viewFactor),
@@ -37,21 +63,28 @@ fun KochSnowflake(
             KochLine(vertex3, vertex1),
         )
 
-        // Run iterations
-        repeat(iterations) {
-            val newLines = mutableListOf<KochLine>()
-            lines.forEach { newLines.addAll(it.expand()) }
-            lines = newLines
-        }
+        scale(
+            scale = 1f,
+            pivot = vertex3
+        ) {
+        rotate(0f) {
+                // Initialize the equilateral triangle
 
-        // Draw
-        lines.forEach {
-            drawLine(
-                color = color,
-                start = it.start,
-                end = it.end,
-                strokeWidth = strokeWidth
-            )
+                // Run iterations
+                repeat(iterations) {
+                    lines = lines.flatMap { it.expand() }
+                }
+
+                // Draw
+                lines.forEach {
+                    drawLine(
+                        color = color,
+                        start = scaleMatrix.map(it.start),
+                        end = scaleMatrix.map(it.end),
+                        strokeWidth = strokeWidth
+                    )
+                }
+            }
         }
     }
 }
@@ -60,6 +93,16 @@ val Float.radians: Float
     get() = (this * (Math.PI / 180)).toFloat()
 
 private data class KochLine(val start: Offset, val end: Offset) {
+
+    private val rotationMatrix = Matrix(
+        values = floatArrayOf(
+            cos(300f.radians), -sin(300f.radians), 0f, 0f,
+            sin(300f.radians), cos(300f.radians), 0f, 0f,
+            0f, 0f, 0f, 0f,
+            0f, 0f, 0f, 0f,
+        )
+    )
+
     val pointA: Offset = start
 
     val pointB: Offset by lazy {
@@ -68,10 +111,8 @@ private data class KochLine(val start: Offset, val end: Offset) {
 
     val pointC: Offset by lazy {
         val intermediate = pointD - pointB
-        pointB + Offset(
-            (intermediate.x * cos((-60f).radians)) + (intermediate.y * -sin((-60f).radians)),
-            (intermediate.x * sin((-60f).radians)) + (intermediate.y * cos((-60f).radians)),
-        )
+        // Apply rotation
+        pointB + rotationMatrix.map(intermediate)
     }
 
     val pointD: Offset by lazy {
