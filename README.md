@@ -1,4 +1,4 @@
-Creative Coding
-===============
+Patterns
+========
 
 Creative coding with Jetpack Compose.
