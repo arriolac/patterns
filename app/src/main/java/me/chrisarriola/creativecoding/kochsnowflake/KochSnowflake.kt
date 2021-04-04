@@ -29,7 +29,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import kotlin.math.cos
 import kotlin.math.sin
 
-private const val viewFactor = 0.95f
+private const val viewFactor = 0.75f
 
 @Composable
 fun KochSnowflake(
@@ -42,10 +42,10 @@ fun KochSnowflake(
         // Initialize the equilateral triangle
         val length = viewFactor * size.width
         val vertex1 = Offset(
-            size.width * (1 - viewFactor),
+            (size.width - length) / 2,
             (size.height / 2) - (cos(60f.radians) * length) / 2
         )
-        val vertex2 = Offset(size.width * viewFactor, vertex1.y)
+        val vertex2 = Offset(vertex1.x + length, vertex1.y)
         val vertex3 = Offset(size.width / 2, vertex1.y + (length * sin(60f.radians)))
         var lines = listOf(
             KochLine(vertex1, vertex2),
