@@ -23,10 +23,10 @@ body:
         required: true
   - type: checkboxes
     attributes:
-      label: Is this an issue related to the sample app?
-      description: Please confirm that this is an issue related to this sample repo. If this is a bug related to Compose, file an issue on the Compose [bug tracker](https://issuetracker.google.com/issues/new?component=612128) instead.
+      label: Is this an issue related to one of the samples?
+      description: Please confirm that this is an issue related to this sample repo. If this is a bug related to Compose, file an issue on the Compose [issue tracker](https://issuetracker.google.com/issues/new?component=612128) instead.
       options:
-      - label: Yes, this is a specific issue related to one of the sample app.
+      - label: Yes, this is a specific issue related to this samples repo.
         required: true
   - type: dropdown
     id: sample-app
