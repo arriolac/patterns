@@ -7,6 +7,27 @@ body:
     attributes:
       value: |
         Thanks for taking the time to fill out this bug report!
+  - type: checkboxes
+    attributes:
+      label: Is there an existing issue for this?
+      description: Please search to see if an issue already exists for the bug you encountered.
+      options:
+      - label: I have searched the existing issues
+        required: true
+  - type: checkboxes
+    attributes:
+      label: Is there a StackOverflow question about this issue?
+      description: Please search [StackOverflow](https://stackoverflow.com/questions/tagged/android-jetpack) if an issue with an answer already exists for the bug you encountered.
+      options:
+      - label: I have searched StackOverflow
+        required: true
+  - type: checkboxes
+    attributes:
+      label: Is this an issue related to the sample app?
+      description: Please confirm that this is an issue related to this sample repo. If this is a bug related to Compose, file an issue on the Compose [bug tracker](https://issuetracker.google.com/issues/new?component=612128) instead.
+      options:
+      - label: Yes, this is a specific issue related to one of the sample app.
+        required: true
   - type: dropdown
     id: sample-app
     attributes:
