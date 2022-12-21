@@ -38,11 +38,10 @@ import androidx.compose.ui.draw.rotate
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.channels.ticker
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

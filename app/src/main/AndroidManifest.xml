@@ -11,7 +11,7 @@
         android:theme="@style/Theme.CreativeCoding">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
+            android:exported="true"
             android:theme="@style/Theme.CreativeCoding.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
